@@ -1,0 +1,99 @@
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #007BFF, #b3d9ff); /* Blue gradient */
+  margin: 0;
+}
+
+/* Container Styling */
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 350px;
+}
+
+/* Title Styling */
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #007BFF;
+}
+
+/* Task Input Styling */
+.task-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#task-input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+#add-btn {
+  padding: 10px 15px;
+  font-size: 16px;
+  background: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#add-btn:hover {
+  background: #0056b3;
+}
+
+/* Task List Styling */
+#task-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Task Item Styling */
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e3f2fd; /* Light blue background */
+  padding: 10px;
+  border-radius: 10px;
+  margin: 5px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Edit & Delete Button Styling */
+.task-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-btn {
+  background: #ffc107;
+  color: white;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+}
