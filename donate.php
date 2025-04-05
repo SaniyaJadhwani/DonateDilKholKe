@@ -184,7 +184,7 @@ if(isset($message)){
         </div>
         <div class="menu">
             <a href="#">Home</a>
-            <a href="#">About</a>
+            <a href="recieve.php">Recieve</a>
             <a href="#">Donate</a>
             <a href="#">Contact</a>
         </div>
