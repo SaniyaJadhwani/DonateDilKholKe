@@ -73,9 +73,10 @@
     </div>
     <div class="menu">
     <a href="Home2.php">Home</a>
-    <a href="Profile.php">Profile</a>
     <a href="donate.php">Donate</a>
     <a href="receive.php">Receive</a>
+    <a href="Profile.php">Profile</a>
+    <a href="feedback.php">Contact Us</a>
     <a href="logout.php">Logout</a>
     </div>
   </nav>

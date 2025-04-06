@@ -1,15 +1,7 @@
 <?php
 session_start();
-<<<<<<< HEAD
-$sender = $_SESSION['username']; // Assume this is logged-in user
-$receiver = $_GET['with']; // The person they are chatting with
-
-$con = new mysqli("localhost", "root", "", "donate_dilkholke");
-if ($con->connect_error) die("Connection Failed");
-=======
 $con = new mysqli("localhost", "Saniya", "", "donate_dilkholke");
 if ($con->connect_error) die("Connection failed: " . $con->connect_error);
->>>>>>> f835a6d7a2eda5ab53741bfcddba2b15fe245083
 
 $current_user = $_SESSION['username'] ?? '';
 $chat_with = $_GET['with'] ?? '';

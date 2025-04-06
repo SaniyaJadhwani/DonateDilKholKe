@@ -1,5 +1,7 @@
 <?php
-if(isset($_POST['login-btn'])) {
+session_start(); // ✅ Start the session at the top
+
+if (isset($_POST['login-btn'])) {
     $uname = filter_input(INPUT_POST, 'uname');
     $pass = filter_input(INPUT_POST, 'pass');
     $c = 0;
@@ -13,6 +15,7 @@ if(isset($_POST['login-btn'])) {
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 if ($row["Username"] == $uname && $row["Password"] == $pass) {
+                    $_SESSION['admin_username'] = $uname; // ✅ Store admin login session
                     echo "<script>alert('Welcome Admin')</script>";
                     $c++;
                     echo "<script>window.location.href='admin_users.php';</script>";
