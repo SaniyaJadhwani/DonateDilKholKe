@@ -4,7 +4,7 @@ if(isset($_POST['login-btn'])) {
     $pass = filter_input(INPUT_POST, 'pass');
     $c = 0;
 
-    $con = new mysqli("localhost", "Saniya", "", "donate_dilkholke");
+    $con = new mysqli("localhost", "root", "", "donate_dilkholke");
     if ($con->connect_error) {
         die("Failed to connect");
     } else {
@@ -44,21 +44,38 @@ if(isset($_POST['login-btn'])) {
     }
 
     body {
-      background-color: #fff0f0;
+      background: url('images/home2.png') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Maroon overlay */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(128, 0, 0, 0.3);
+      z-index: 0;
     }
 
     .wrapper {
-      background: #ffffff;
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.9);
       padding: 40px 30px;
       border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       width: 100%;
       max-width: 400px;
       text-align: center;
+      backdrop-filter: blur(5px);
     }
 
     .wrapper h1 {
@@ -122,6 +139,9 @@ if(isset($_POST['login-btn'])) {
   </style>
 </head>
 <body>
+  <!-- Maroon overlay div -->
+  <div class="overlay"></div>
+
   <div class="wrapper">
     <form action="" method="post">
       <h1>Admin Login</h1>

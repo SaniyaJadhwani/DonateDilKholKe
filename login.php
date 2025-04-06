@@ -4,7 +4,7 @@ if (isset($_POST['login-btn'])) {
     $pass = filter_input(INPUT_POST, 'pass');
     $c = 0;
 
-    $con = new mysqli("localhost", "Saniya", "", "donate_dilkholke");
+    $con = new mysqli("localhost", "root", "", "donate_dilkholke");
     if ($con->connect_error) {
         die("Failed to connect");
     } else {

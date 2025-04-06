@@ -4,7 +4,7 @@ $uname = $_SESSION["username"];
 $_SESSION["username"] = $uname;
 $DonationId = $_GET['pid'];
 
-$con = new mysqli("localhost", "Saniya", "", "donate_dilkholke");
+$con = new mysqli("localhost", "root", "", "donate_dilkholke");
 if ($con->connect_error) {
     die("Failed to connect");
 } else {

@@ -1,7 +1,7 @@
 <?php
 session_start();
 $uname = $_SESSION["username"];
-$conn = mysqli_connect("localhost", "Saniya", "", "donate_dilkholke") or die('connection failed');
+$conn = mysqli_connect("localhost", "root", "", "donate_dilkholke") or die('connection failed');
 
 if (isset($_POST['donate_item'])) {
     $d_item = $_POST['type'];

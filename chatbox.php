@@ -3,7 +3,7 @@ session_start();
 $sender = $_SESSION['username']; // Assume this is logged-in user
 $receiver = $_GET['with']; // The person they are chatting with
 
-$con = new mysqli("localhost", "Saniya", "", "donate_dilkholke");
+$con = new mysqli("localhost", "root", "", "donate_dilkholke");
 if ($con->connect_error) die("Connection Failed");
 
 ?>

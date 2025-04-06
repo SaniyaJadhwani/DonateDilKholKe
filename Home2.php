@@ -22,7 +22,8 @@
       position: relative;
       width: 100%;
       height: 100vh;
-      background: url('images/indexpage.png') no-repeat center center/cover;
+      background: url('images/home2.png') no-repeat center center/cover;
+
       display: flex;
       align-items: center;
       justify-content: center;
@@ -30,15 +31,7 @@
       color: white;
     }
 
-    .hero .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(128, 0, 0, 0.2); /* Light maroon */
-    }
-
+    
     .hero .content {
       position: relative;
       max-width: 600px;
@@ -49,13 +42,14 @@
     .hero h1 {
       font-size: 40px;
       font-weight: bold;
+      color: #800000;
     }
 
     .hero .btn {
       margin-top: 30px;
       padding: 12px 24px;
-      background: white;
-      color: #800000;
+      background:#800000;
+      color: white;
       font-size: 18px;
       border: none;
       border-radius: 50px;

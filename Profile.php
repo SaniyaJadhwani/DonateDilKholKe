@@ -6,7 +6,7 @@ if (!isset($_SESSION['username'])) {
 }
 $uname = $_SESSION['username'];
 
-$con = new mysqli("localhost", "Saniya", "", "donate_dilkholke");
+$con = new mysqli("localhost", "root", "", "donate_dilkholke");
 if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
 }

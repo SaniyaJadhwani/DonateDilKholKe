@@ -59,15 +59,17 @@
     }
 
     .hero {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      height: 85vh;
-      padding: 30px;
-      background: linear-gradient(to right, #fff, #ffe5e5);
-      position: relative;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 85vh;
+  padding: 30px;
+  background: 
+    linear-gradient(rgba(128, 0, 0, 0.3), rgba(128, 0, 0, 0.3)), 
+    url('images/indexpage.png') no-repeat center center/cover;
+  position: relative;
+}
 
     .hero .content {
       max-width: 700px;
@@ -76,14 +78,14 @@
 
     .hero h1 {
       font-size: 40px;
-      color: maroon;
+      color: white;
       font-weight: 700;
       margin-bottom: 20px;
     }
 
     .hero p {
       font-size: 18px;
-      color: #333;
+      color: white;
       margin-bottom: 30px;
     }
 
@@ -118,6 +120,11 @@
         align-items: center;
       }
 
+      .hero {
+        padding: 40px 20px;
+        height: auto;
+      }
+
       .hero h1 {
         font-size: 28px;
       }
@@ -135,7 +142,7 @@
       <h1>Donate Dilkholke</h1>
     </div>
     <div class="menu">
-    <a href="AdminLogin.php">Admin Login</a>
+      <a href="AdminLogin.php">Admin Login</a>
       <a href="login.php">User Login</a>
       <a href="register.php">User Registration</a>
     </div>
