@@ -219,31 +219,37 @@ $sent_requests = $con->query("SELECT r.*, d.Item, u.Email, u.MobileNo FROM reque
 
     <!-- NOTIFICATIONS -->
     <div id="notifications" class="tab-content">
-      <div class="section-title">📥 Requests Received</div>
-      <?php while ($row = $received_requests->fetch_assoc()): ?>
-        <div class="notification-box">
-          <strong><?php echo $row['RecieverName']; ?></strong> requested <strong><?php echo $row['Item']; ?></strong><br>
-          Status: <strong><?php echo $row['Status']; ?></strong>
-          <?php if ($row['Status'] == 'Pending'): ?>
-            <form method="post" onsubmit="return confirm('Are you sure you want to proceed?');">
-              <input type="hidden" name="request_id" value="<?php echo $row['RequestId']; ?>">
-              <button type="submit" name="action" value="Accepted" class="accept-btn">Accept</button>
-              <button type="submit" name="action" value="Declined" class="decline-btn">Decline</button>
-            </form>
-          <?php endif; ?>
-        </div>
-      <?php endwhile; ?>
+      <!-- RECEIVED REQUESTS -->
+<div class="section-title">📥 Requests Received</div>
+<?php while ($row = $received_requests->fetch_assoc()): ?>
+  <div class="notification-box">
+    <strong><?php echo $row['RecieverName']; ?></strong> requested <strong><?php echo $row['Item']; ?></strong><br>
+    Status: <strong><?php echo $row['Status']; ?></strong>
+    <?php if ($row['Status'] == 'Pending'): ?>
+      <form method="post" onsubmit="return confirm('Are you sure you want to proceed?');">
+        <input type="hidden" name="request_id" value="<?php echo $row['RequestId']; ?>">
+        <button type="submit" name="action" value="Accepted" class="accept-btn">Accept</button>
+        <button type="submit" name="action" value="Declined" class="decline-btn">Decline</button>
+      </form>
+    <?php elseif ($row['Status'] == 'Accepted'): ?>
+      <br><a href="chatbox.php?with=<?php echo $row['RecieverName']; ?>" class="accept-btn" style="background: #800000;">💬 Chat Now</a>
+    <?php endif; ?>
+  </div>
+<?php endwhile; ?>
 
-      <div class="section-title">📤 Requests Sent</div>
-      <?php while ($row = $sent_requests->fetch_assoc()): ?>
-        <div class="notification-box">
-          You requested <strong><?php echo $row['Item']; ?></strong> from <strong><?php echo $row['DonorName']; ?></strong><br>
-          Status: <strong><?php echo $row['Status']; ?></strong><br>
-          <?php if ($row['Status'] == 'Accepted'): ?>
-            📞 Contact Donor: <?php echo $row['MobileNo']; ?> | ✉️ <?php echo $row['Email']; ?>
-          <?php endif; ?>
-        </div>
-      <?php endwhile; ?>
+<!-- SENT REQUESTS -->
+<div class="section-title">📤 Requests Sent</div>
+<?php while ($row = $sent_requests->fetch_assoc()): ?>
+  <div class="notification-box">
+    You requested <strong><?php echo $row['Item']; ?></strong> from <strong><?php echo $row['DonorName']; ?></strong><br>
+    Status: <strong><?php echo $row['Status']; ?></strong><br>
+    <?php if ($row['Status'] == 'Accepted'): ?>
+      📞 Contact Donor: <?php echo $row['MobileNo']; ?> | ✉️ <?php echo $row['Email']; ?><br>
+      <a href="chatbox.php?with=<?php echo $row['DonorName']; ?>" class="accept-btn" style="background: #800000;">💬 Chat Now</a>
+    <?php endif; ?>
+  </div>
+<?php endwhile; ?>
+
     </div>
   </div>
 
