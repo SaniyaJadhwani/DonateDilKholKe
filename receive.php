@@ -1,6 +1,29 @@
 <?php 
 @include 'config.php';
 include 'header.php';
+
+session_start();
+$username = $_SESSION['username'] ?? '';
+
+// Handle filter
+$filter = $_GET['filter'] ?? 'all';
+
+$query = "SELECT * FROM donation_items";
+
+if ($filter === 'available') {
+    $query .= " WHERE DonationId NOT IN (SELECT DonationId FROM request WHERE RecieverName = '$username')";
+} elseif ($filter === 'requested') {
+    $query .= " WHERE DonationId IN (SELECT DonationId FROM request WHERE RecieverName = '$username')";
+}
+
+$select_products = mysqli_query($conn, $query);
+
+// Get all request statuses for current user
+$user_requests = [];
+$req_query = mysqli_query($conn, "SELECT DonationId, Status FROM request WHERE RecieverName = '$username'");
+while ($row = mysqli_fetch_assoc($req_query)) {
+    $user_requests[$row['DonationId']] = $row['Status'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +61,26 @@ include 'header.php';
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
+    .filter-buttons {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .filter-buttons a {
+      display: inline-block;
+      margin: 0 10px;
+      padding: 10px 20px;
+      background: #800000;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .filter-buttons a.active {
+      background-color: #a30000;
+    }
+
     .items-container {
       display: flex;
       flex-wrap: wrap;
@@ -53,6 +96,7 @@ include 'header.php';
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       text-align: center;
+      position: relative;
     }
 
     .item-card:hover {
@@ -100,6 +144,24 @@ include 'header.php';
       background-color: #a50000;
     }
 
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: gray;
+      color: white;
+      padding: 5px 12px;
+      font-size: 12px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .badge.pending { background-color: orange; }
+    .badge.accepted { background-color: green; }
+    .badge.declined { background-color: red; }
+    .badge.requested { background-color: #555; }
+    .badge.donated { background-color: #6c757d; }
+
     @media (max-width: 768px) {
       .item-card {
         width: 90%;
@@ -122,20 +184,44 @@ include 'header.php';
       <h1>Donated Items</h1>
     </div>
 
+    <div class="filter-buttons">
+      <a href="receive.php?filter=all" class="<?= $filter == 'all' ? 'active' : '' ?>">Show All</a>
+      <a href="receive.php?filter=available" class="<?= $filter == 'available' ? 'active' : '' ?>">Available</a>
+      <a href="receive.php?filter=requested" class="<?= $filter == 'requested' ? 'active' : '' ?>">Requested</a>
+    </div>
+
     <div class="items-container">
       <?php
-      $select_products = mysqli_query($conn, "SELECT * FROM `donation_items`");
       if (mysqli_num_rows($select_products) > 0) {
         while ($fetch_product = mysqli_fetch_assoc($select_products)) {
+          $donation_id = $fetch_product['DonationId'];
+          $status = $user_requests[$donation_id] ?? null;
+          $is_own_donation = $fetch_product['Username'] === $username;
       ?>
         <div class="item-card">
           <img src="images/<?php echo $fetch_product['Image']; ?>" alt="Item Image">
           <div class="item-info">
             <h4><?php echo $fetch_product['Item']; ?></h4>
             <p><?php echo $fetch_product['Description']; ?></p>
-            <h4>By: <?php echo $fetch_product['Username']; ?></h4>
-            <a href="ProductPage.php?pid=<?php echo $fetch_product['DonationId']; ?>" class="item-btn">View Item</a>
+            <h4>By: <?php echo $is_own_donation ? 'You' : $fetch_product['Username']; ?></h4>
+
+            <a href="ProductPage.php?pid=<?php echo $donation_id; ?>" class="item-btn">View Item</a>
           </div>
+
+          <?php if ($is_own_donation): ?>
+            <div class="badge donated">Donated by You</div>
+          <?php elseif ($status): ?>
+            <div class="badge 
+              <?php 
+                if ($status == 'Pending') echo 'pending'; 
+                elseif ($status == 'Accepted') echo 'accepted'; 
+                elseif ($status == 'Declined') echo 'declined';
+              ?>">
+              <?php echo $status; ?>
+            </div>
+          <?php elseif ($filter == 'requested'): ?>
+            <div class="badge requested">Request Sent</div>
+          <?php endif; ?>
         </div>
       <?php
         }
