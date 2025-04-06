@@ -14,9 +14,8 @@
     }
 
     body {
-      background-color: #ffffff;
-      color: #0F4C75;
-      overflow-x: hidden;
+      background: linear-gradient(to right, #f8f8f8, #f0f0f0);
+      color: #4a4a4a;
     }
 
     .hero {

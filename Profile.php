@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: index.php");
+    exit();
+}
 $uname = $_SESSION['username'];
 
 $con = new mysqli("localhost", "Saniya", "", "donate_dilkholke");
