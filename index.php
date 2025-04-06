@@ -135,8 +135,9 @@
       <h1>Donate Dilkholke</h1>
     </div>
     <div class="menu">
-      <a href="login.php">Login</a>
-      <a href="register.php">Register</a>
+    <a href="AdminLogin.php">Admin Login</a>
+      <a href="login.php">User Login</a>
+      <a href="register.php">User Registration</a>
     </div>
   </nav>
 
