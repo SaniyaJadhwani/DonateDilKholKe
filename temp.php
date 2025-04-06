@@ -23,7 +23,7 @@ if(isset($_POST['register-btn'])) {
             echo "<script>alert('Registered Successfully');</script>";
             session_start();
             $_SESSION["username"] = $uname;
-            echo "<script>window.location.href='Home2.php';</script>";
+            echo "<script>window.location.href='donate.php';</script>";
         } else {
             echo "<script>alert('Registration not successful');</script>";
         }
