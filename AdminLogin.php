@@ -15,7 +15,7 @@ if(isset($_POST['login-btn'])) {
                 if ($row["Username"] == $uname && $row["Password"] == $pass) {
                     echo "<script>alert('Welcome Admin')</script>";
                     $c++;
-                    echo "<script>window.location.href='AdminPanel.php';</script>";
+                    echo "<script>window.location.href='admin_users.php';</script>";
                     exit();
                 }
             }
