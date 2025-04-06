@@ -1,4 +1,4 @@
-<?php
+<?php 
 @include 'config.php';
 include 'header.php';
 
@@ -9,6 +9,7 @@ $username = $_SESSION['username'] ?? '';
 $filter = $_GET['filter'] ?? 'all';
 
 $query = "SELECT * FROM donation_items";
+
 if ($filter === 'available') {
     $query .= " WHERE DonationId NOT IN (SELECT DonationId FROM request WHERE RecieverName = '$username')";
 } elseif ($filter === 'requested') {
@@ -32,7 +33,6 @@ while ($row = mysqli_fetch_assoc($req_query)) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Donated Items</title>
   <style>
-    <?php // Keep original styles here ?>
     * {
       margin: 0;
       padding: 0;
@@ -160,6 +160,7 @@ while ($row = mysqli_fetch_assoc($req_query)) {
     .badge.accepted { background-color: green; }
     .badge.declined { background-color: red; }
     .badge.requested { background-color: #555; }
+    .badge.donated { background-color: #6c757d; }
 
     @media (max-width: 768px) {
       .item-card {
@@ -195,16 +196,21 @@ while ($row = mysqli_fetch_assoc($req_query)) {
         while ($fetch_product = mysqli_fetch_assoc($select_products)) {
           $donation_id = $fetch_product['DonationId'];
           $status = $user_requests[$donation_id] ?? null;
+          $is_own_donation = $fetch_product['Username'] === $username;
       ?>
         <div class="item-card">
           <img src="images/<?php echo $fetch_product['Image']; ?>" alt="Item Image">
           <div class="item-info">
             <h4><?php echo $fetch_product['Item']; ?></h4>
             <p><?php echo $fetch_product['Description']; ?></p>
-            <h4>By: <?php echo $fetch_product['Username']; ?></h4>
+            <h4>By: <?php echo $is_own_donation ? 'You' : $fetch_product['Username']; ?></h4>
+
             <a href="ProductPage.php?pid=<?php echo $donation_id; ?>" class="item-btn">View Item</a>
           </div>
-          <?php if ($status): ?>
+
+          <?php if ($is_own_donation): ?>
+            <div class="badge donated">Donated by You</div>
+          <?php elseif ($status): ?>
             <div class="badge 
               <?php 
                 if ($status == 'Pending') echo 'pending'; 

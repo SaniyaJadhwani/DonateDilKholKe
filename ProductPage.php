@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 $uname = $_SESSION["username"];
 $DonationId = $_GET['pid'];
@@ -18,6 +18,9 @@ while ($row = $result->fetch_assoc()) {
     $image = $row['Image'];
 }
 
+// Check if user is the donor
+$isOwnDonation = ($uname === $name);
+
 // Check if already requested
 $alreadyRequested = false;
 $check_request = mysqli_query($con, "SELECT * FROM request WHERE RecieverName='$uname' AND DonationId='$DonationId'");
@@ -26,7 +29,7 @@ if (mysqli_num_rows($check_request) > 0) {
 }
 
 // Handle request submission
-if (isset($_POST['request']) && !$alreadyRequested) {
+if (isset($_POST['request']) && !$alreadyRequested && !$isOwnDonation) {
     $sql2 = "INSERT INTO request(DonorName, RecieverName, DonationId, Status) VALUES('$name', '$uname', '$DonationId', 'Pending')";
     $con->query($sql2);
     echo "<script>alert('Request Sent to Donor'); window.location.href = window.location.href;</script>";
@@ -165,7 +168,9 @@ if (isset($_POST['request']) && !$alreadyRequested) {
         <div class="price"><?php echo $description; ?></div>
         <div class="buttons">
           <form action="" method="post">
-            <?php if ($alreadyRequested): ?>
+            <?php if ($isOwnDonation): ?>
+              <input type="button" value="You can't request your own item" class="request-btn disabled-btn" disabled>
+            <?php elseif ($alreadyRequested): ?>
               <input type="button" value="Request Already Sent" class="request-btn disabled-btn" disabled>
             <?php else: ?>
               <input type="submit" name="request" value="Request" class="request-btn">

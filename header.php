@@ -76,7 +76,6 @@
     <a href="Profile.php">Profile</a>
     <a href="donate.php">Donate</a>
     <a href="receive.php">Receive</a>
-    <a href="#">Contact Us</a>
     <a href="logout.php">Logout</a>
     </div>
   </nav>
