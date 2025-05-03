@@ -138,8 +138,11 @@
   </div>
   <ul>
     <li><a href="admin_dashboard.php"><i class='bx bxs-dashboard'></i> <span>Dashboard</span></a></li>
-    <li><a href="admin_users.php"><i class='bx bxs-user'></i> <span>User Management</span></a></li>
-    <li><a href="admin_feedback.php"><i class='bx bxs-message-rounded-dots'></i> <span>Feedback</span></a></li>
+    <li><a href="admin_users.php"><i class='bx bxs-user-detail'></i> <span>User Management</span></a></li>
+    <li><a href="admin_donations.php"><i class='bx bxs-gift'></i> <span>Donation Management</span></a></li>
+    <li><a href="admin_requests.php"><i class='bx bxs-archive'></i> <span>Request Management</span></a></li>
+    <li><a href="admin_feedback.php"><i class='bx bxs-message-dots'></i> <span>Feedback</span></a></li>
+    <li><a href="admin_settings.php"><i class='bx bxs-cog'></i> <span>Website Settings</span></a></li>
     <li><a href="admin_change_password.php"><i class='bx bxs-lock'></i> <span>Change Password</span></a></li>
     <li><a href="admin_logout.php"><i class='bx bxs-log-out'></i> <span>Logout</span></a></li>
   </ul>

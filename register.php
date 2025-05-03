@@ -1,3 +1,50 @@
+<?php
+// database connection
+$conn = new mysqli("localhost", "Saniya", "", "donate_dilkholke"); // Change as needed
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$msg = "";
+
+if (isset($_POST['register-btn'])) {
+    $username = $_POST['uname'];
+    $email = $_POST['email'];
+    $mobile = $_POST['mobile'];
+    $address = $_POST['add'];
+    $password = $_POST['pass'];
+    $confirmPassword = $_POST['cpass'];
+
+    // Check if passwords match
+    if ($password !== $confirmPassword) {
+        $msg = "Passwords do not match!";
+    } else {
+        // Check if email already exists
+        $checkQuery = "SELECT * FROM users WHERE Email = ?";
+        $stmt = $conn->prepare($checkQuery);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $msg = "Email already registered!";
+        } else {
+            // Insert user into DB
+
+            $query = "INSERT INTO users (Username, Password, Address, MobileNo, Email) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("sssss", $username, $password, $address, $mobile, $email);
+
+            if ($stmt->execute()) {
+                $msg = "Registered successfully!";
+            } else {
+                $msg = "Registration failed. Try again.";
+            }
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,7 +211,7 @@
                 <span>or</span>
             </div>
             
-            <p class="login-link">Already have an account? <a href="#">Sign In</a></p>
+            <p class="login-link">Already have an account? <a href="login.php">Sign In</a></p>
         </form>
     </div>
 </body>

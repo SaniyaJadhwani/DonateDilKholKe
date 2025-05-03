@@ -7,15 +7,20 @@ if (!isset($_SESSION['admin_username'])) {
 
 $con = new mysqli("localhost", "root", "", "donate_dilkholke");
 
-// Mark as resolved
-if (isset($_GET['resolve_id'])) {
-    $id = intval($_GET['resolve_id']);
-    $con->query("UPDATE feedback SET Status='Resolved' WHERE ID=$id");
+// Mark as resolved and store admin reply
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['reply_id'])) {
+    $id = intval($_POST['reply_id']);
+    $admin_reply = $con->real_escape_string($_POST['admin_reply']);
+
+    $update = $con->prepare("UPDATE feedback SET Status='Resolved', admin_reply=? WHERE ID=?");
+    $update->bind_param("si", $admin_reply, $id);
+    $update->execute();
+
     header("Location: admin_feedback.php");
     exit();
 }
 
-// Fetch feedbacks
+// Fetch all feedbacks
 $feedbacks = $con->query("SELECT * FROM feedback ORDER BY Timestamp DESC");
 ?>
 
@@ -52,6 +57,7 @@ $feedbacks = $con->query("SELECT * FROM feedback ORDER BY Timestamp DESC");
     th, td {
       padding: 15px;
       border-bottom: 1px solid #eee;
+      vertical-align: top;
       text-align: left;
     }
 
@@ -60,11 +66,14 @@ $feedbacks = $con->query("SELECT * FROM feedback ORDER BY Timestamp DESC");
       color: white;
     }
 
-    .actions a {
+    .actions a, .actions form input[type="submit"] {
       margin-right: 10px;
       text-decoration: none;
       color: #800000;
       font-weight: bold;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
 
     .status {
@@ -82,6 +91,43 @@ $feedbacks = $con->query("SELECT * FROM feedback ORDER BY Timestamp DESC");
     .Resolved {
       background: #d4edda;
       color: #155724;
+    }
+
+    .admin-reply-box {
+      margin-top: 10px;
+    }
+
+    .admin-reply-box textarea {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      resize: vertical;
+      margin-top: 5px;
+    }
+
+    .admin-reply-box input[type="submit"] {
+      margin-top: 8px;
+      background-color: #800000;
+      color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .admin-reply-box input[type="submit"]:hover {
+      background-color: #a00000;
+    }
+
+    .reply-view {
+      margin-top: 8px;
+      font-style: italic;
+      color: #333;
+      background-color: #f0f0f0;
+      padding: 8px;
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -108,13 +154,22 @@ $feedbacks = $con->query("SELECT * FROM feedback ORDER BY Timestamp DESC");
           <td><?= $count++ ?></td>
           <td><?= htmlspecialchars($row['Username']) ?></td>
           <td><?= htmlspecialchars($row['Email']) ?></td>
-          <td><?= nl2br(htmlspecialchars($row['Message'])) ?></td>
+          <td><?= nl2br(htmlspecialchars($row['Message'])) ?>
+            <?php if ($row['Status'] === 'Resolved' && !empty($row['admin_reply'])): ?>
+              <div class="reply-view"><strong>Reply:</strong> <?= nl2br(htmlspecialchars($row['admin_reply'])) ?></div>
+            <?php endif; ?>
+          </td>
           <td><span class="status <?= htmlspecialchars($row['Status']) ?>"><?= htmlspecialchars($row['Status']) ?></span></td>
           <td><?= htmlspecialchars($row['Timestamp']) ?></td>
           <td class="actions">
-            <a href="mailto:<?= htmlspecialchars($row['Email']) ?>?subject=Regarding your feedback">Reply</a>
+            <a href="mailto:<?= htmlspecialchars($row['Email']) ?>?subject=Regarding your feedback">Reply via Email</a>
             <?php if ($row['Status'] !== 'Resolved'): ?>
-              <a href="?resolve_id=<?= $row['ID'] ?>" onclick="return confirm('Mark this message as resolved?')">Mark as Resolved</a>
+              <form method="POST" class="admin-reply-box">
+                <input type="hidden" name="reply_id" value="<?= $row['ID'] ?>">
+                <label for="admin_reply">Reply:</label>
+                <textarea name="admin_reply" rows="3" placeholder="Write your reply here..." required></textarea>
+                <input type="submit" value="Send Reply & Mark Resolved">
+              </form>
             <?php endif; ?>
           </td>
         </tr>
